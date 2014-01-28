@@ -1,3 +1,5 @@
+This is the github pages for the club Stony Brook University Mobile App Developers. This website was build using the Modernist Theme available through github. I left their README.md to give them credit
+
 # Modernist Theme
 
 [Demo the Theme](http://orderedlist.github.com/modernist/)
