@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Android Setup"
+title:  "Android-Setup"
 date:   2014-01-29 21:34:10
 categories: android tutorials
 ---
@@ -119,7 +119,8 @@ For example: <a href="http://blog.immersion.com/2013/05/developer-options-galaxy
 <p> So lets try out print some Logs. Go to Src->com.SBUMAD.helloworld and open up MainActivity.java</p>
 <img src="../../../../../images/Android/SetupLog01.png">
 <p> Now under OnCreate append </p>
-{% highlight java %}Log.i("MyApp", "Info: Use me to spit out basic infomation like ensuring a function is being called"); 
+{% highlight java %}
+Log.i("MyApp", "Info: Use me to spit out basic infomation like ensuring a function is being called"); 
 Log.e("MyApp", "Error: Use me to print out throw errors"); 
 Log.d("MyApp", "Debug: Use to spit out debugging info");
   {% endhighlight %}

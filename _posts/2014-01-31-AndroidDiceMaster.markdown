@@ -1,10 +1,9 @@
 ---
 layout: post
-title:  "Android Dice Master"
+title:  "Android-Dice-Master"
 date:   2014-01-29 21:34:10
 categories: android tutorials
 ---
-
 <h2> Dice Master </h2>
 <p> In this tutorial, we will be building a dice rolling app. It will be able to roll n number of dice of one of the Platonic solid dice {4, 6, 8, 10, 12, 20} or a coin. The app will spit out the sum. </p>
 <p> The goal of this tutorial is to teach you how to read in user input and apply changes to the applications views in real time. As well as explain the concept of Android resources. </p>
