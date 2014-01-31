@@ -1,6 +1,7 @@
 name: SBUMAD
 markdown: redcarpet
 pygments: true
+comments: yes
 
 # defaults
 sass:
