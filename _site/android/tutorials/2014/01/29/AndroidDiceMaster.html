@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Android Dice Master</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/styles.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/javascripts/script.js"></script>
+        <script type="text/javascript" src="/javascripts/scale.fix.js"></script>
+
+
+    </head>
+    <body>
+      <div class="wrapper">
+        <header> 
+          <h1><a href="../../../../../index.html">SBUMAD</a></h1>
+          <p>Stony Brook University Mobile App Developers</p>
+          <p class="view"><a href="http://github.com/orderedlist/modernist">View the Project on GitHub <small>orderedlist/modernist</small></a></p>
+          <ul>
+            <li><a href="https://www.facebook.com/groups/SBUMAD/">Join Us On<strong>Facebook</strong></a></li>
+            <li><a href="../../../../../pages.html">Our <strong>Tutorials</strong></a></li>
+            <li><a href="https://github.com/SBUMAD" style="color:#FFF;">View Us On <strong>GitHub</strong></a></li>
+        </ul>
+        </header>
+        <section>
+          <h2> Dice Master </h2>
+
+<p> In this tutorial, we will be building a dice rolling app. It will be able to roll n number of dice of one of the Platonic solid dice {4, 6, 8, 10, 12, 20} or a coin. The app will spit out the sum. </p>
+
+<p> The goal of this tutorial is to teach you how to read in user input and apply changes to the applications views in real time. As well as explain the concept of Android resources. </p>
+
+<h2> Getting Started </h2>
+
+<p> This tutorial assumes you have a working Android environment. If not, please follow our <a src="2014-01-29-AndroidSetup.html">Setup Tutorial</a> before continuing this tutorial</p>
+
+<p> First create a new application named DiceMaster </p>
+
+<h2> Adding Resources </h2>
+
+<p> Resources are precompiled primitive variables, usual integers or strings, to be used for UI settings. The purpose is simplify UI creation as well improve performance. </p>
+
+<p> For those familiar with Web development, you can think of the XML templats as your HTML and the resources are your CSS. You can create all of your HTML and CSS through Javascript if you really wanted to but that is haphazardous and unnecessary complexity</p>
+
+<p> you will find the resources in the /RES/ folder, and open up the file <strong>res/layout/activity_main.xml</strong>/</p>
+
+<p> Now you are going to change the XML to this </p>
+
+<div class="highlight"><pre><code class="java"><span class="o">&lt;?</span><span class="n">xml</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;1.0&quot;</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="o">?&gt;</span>
+<span class="o">&lt;</span><span class="n">RelativeLayout</span> <span class="nl">xmlns:</span><span class="n">android</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span>
+    <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span>
+    <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">TextView</span>
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/TextViewTitle&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;@string/numberOfSides&quot;</span>
+      <span class="nl">android:</span><span class="n">textSize</span><span class="o">=</span><span class="s">&quot;10pt&quot;</span>
+      <span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">TextView</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">Spinner</span> 
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/SpinnerFeedbackType&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+      <span class="nl">android:</span><span class="n">prompt</span><span class="o">=</span><span class="s">&quot;@string/spinnertext&quot;</span>
+      <span class="nl">android:</span><span class="n">entries</span><span class="o">=</span><span class="s">&quot;@array/feedbacktypelist&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@id/TextViewTitle&quot;</span>
+      <span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">requestFocus</span> <span class="o">/&gt;</span>
+  <span class="o">&lt;/</span><span class="n">Spinner</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">TextView</span>
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/NumberOfDice&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;@string/numberOfDice&quot;</span>
+      <span class="nl">android:</span><span class="n">textSize</span><span class="o">=</span><span class="s">&quot;10pt&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@id/SpinnerFeedbackType&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">TextView</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">EditText</span> 
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/ETNumberOfDice&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">hint</span><span class="o">=</span><span class="s">&quot;@string/numberOfDiceHint&quot;</span>
+      <span class="nl">android:</span><span class="n">inputType</span><span class="o">=</span><span class="s">&quot;number&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@id/NumberOfDice&quot;</span>
+      <span class="nl">android:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;@string/defaultEditText&quot;</span>
+      <span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="n">Button</span>
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/ButtonSendFeedback&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;@string/feedbackbutton&quot;</span>
+      <span class="nl">android:</span><span class="n">onClick</span><span class="o">=</span><span class="s">&quot;diceRoll&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_centerInParent</span><span class="o">=</span><span class="s">&quot;true&quot;</span><span class="o">&gt;&lt;/</span><span class="n">Button</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">TextView</span>
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/Result&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+      <span class="nl">android:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;@string/result&quot;</span>
+      <span class="nl">android:</span><span class="n">textSize</span><span class="o">=</span><span class="s">&quot;50pt&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@id/ButtonSendFeedback&quot;</span>
+      <span class="nl">android:</span><span class="n">layout_centerInParent</span><span class="o">=</span><span class="s">&quot;true&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">TextView</span><span class="o">&gt;</span>
+    
+
+<span class="o">&lt;/</span><span class="n">RelativeLayout</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p> I know this is a lot of text so hopefully I can explain it well enough that we don't have to go into too much detail. This layout is using the Relative Layout which followings an idea of alignments and positions. So see the last TextView element, see how it has 
+<div class="highlight"><pre><code class="java"><span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@id/ButtonSendFeedback&quot;</span>
+<span class="nl">android:</span><span class="n">layout_centerInParent</span><span class="o">=</span><span class="s">&quot;true&quot;</span> 
+</code></pre></div>
+ that means that it will be placed below element that has the id ButtonSendFeedback and it will be aligned to the Center of its parent element aka the RelativeLayout</p>
+
+<p> Next you are going to open <strong> res/values/strings.xml</strong> and edit it to this</p>
+
+<div class="highlight"><pre><code class="java"><span class="o">&lt;?</span><span class="n">xml</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;1.0&quot;</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="o">?&gt;</span>
+<span class="o">&lt;</span><span class="n">resources</span><span class="o">&gt;</span>
+
+    <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;app_name&quot;</span><span class="o">&gt;</span><span class="n">DiceMaster</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;action_settings&quot;</span><span class="o">&gt;</span><span class="n">Settings</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;hello_world&quot;</span><span class="o">&gt;</span><span class="n">Hello</span> <span class="n">world</span><span class="o">!&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktitle&quot;</span><span class="o">&gt;</span><span class="n">DiceMaster</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;spinnertext&quot;</span><span class="o">&gt;</span><span class="n">Pick</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">sides</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbackbutton&quot;</span><span class="o">&gt;</span><span class="n">Roll</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;numberOfDice&quot;</span><span class="o">&gt;</span><span class="n">Number</span> <span class="n">of</span> <span class="n">Dice</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;numberOfDiceHint&quot;</span><span class="o">&gt;</span><span class="n">Number</span> <span class="n">of</span> <span class="n">Dice</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;numberOfSides&quot;</span><span class="o">&gt;</span><span class="n">Number</span> <span class="n">of</span> <span class="n">Sides</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;defaultEditText&quot;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;result&quot;</span><span class="o">&gt;&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktype1&quot;</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktype2&quot;</span><span class="o">&gt;</span><span class="mi">4</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktype3&quot;</span><span class="o">&gt;</span><span class="mi">6</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktype4&quot;</span><span class="o">&gt;</span><span class="mi">8</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktype5&quot;</span><span class="o">&gt;</span><span class="mi">10</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktype6&quot;</span><span class="o">&gt;</span><span class="mi">12</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktype7&quot;</span><span class="o">&gt;</span><span class="mi">20</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">string</span><span class="o">-</span><span class="n">array</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;feedbacktypelist&quot;</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span><span class="nd">@string</span><span class="o">/</span><span class="n">feedbacktype1</span><span class="o">&lt;/</span><span class="n">item</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span><span class="nd">@string</span><span class="o">/</span><span class="n">feedbacktype2</span><span class="o">&lt;/</span><span class="n">item</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span><span class="nd">@string</span><span class="o">/</span><span class="n">feedbacktype3</span><span class="o">&lt;/</span><span class="n">item</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span><span class="nd">@string</span><span class="o">/</span><span class="n">feedbacktype4</span><span class="o">&lt;/</span><span class="n">item</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span><span class="nd">@string</span><span class="o">/</span><span class="n">feedbacktype5</span><span class="o">&lt;/</span><span class="n">item</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span><span class="nd">@string</span><span class="o">/</span><span class="n">feedbacktype6</span><span class="o">&lt;/</span><span class="n">item</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">item</span><span class="o">&gt;</span><span class="nd">@string</span><span class="o">/</span><span class="n">feedbacktype7</span><span class="o">&lt;/</span><span class="n">item</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">string</span><span class="o">-</span><span class="n">array</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">resources</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<h2> Now do a test Run </h2>
+
+<p> It should look like something like this: </p>
+
+<p> So what is going on? Well, first we are building static literal strings to generate these ui elements. The array of strings is useful for the Spinner element since it requires a set of values. </p>
+
+<h2> Lets get the INPUT!!</h2>
+
+<p> now lets build some interactivity between the View and Activity </p>
+
+<p> First thing first we need to get the spinner's value since that is what is going to decide what type of dice we are going to roll</p>
+
+<div class="highlight"><pre><code class="java"> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">diceRoll</span><span class="o">(</span><span class="n">View</span> <span class="n">Button</span><span class="o">)</span>
+    <span class="o">{</span>
+      <span class="n">Spinner</span> <span class="n">numberOfSides</span> <span class="o">=</span> <span class="o">(</span><span class="n">Spinner</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">SpinnerFeedbackType</span><span class="o">);</span>
+      <span class="n">String</span> <span class="n">sNumberOfSides</span> <span class="o">=</span> <span class="n">numberOfSides</span><span class="o">.</span><span class="na">getSelectedItem</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+      <span class="kt">int</span> <span class="n">iNumberOfSides</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">sNumberOfSides</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+<p> After that we need to get the EditText's value so we know how many dice we are to roll </p>
+
+<div class="highlight"><pre><code class="java"> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">diceRoll</span><span class="o">(</span><span class="n">View</span> <span class="n">Button</span><span class="o">)</span>
+    <span class="o">{</span>
+      <span class="o">...</span>
+      <span class="n">EditText</span> <span class="n">numberOfDice</span> <span class="o">=</span> <span class="o">(</span><span class="n">EditText</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">ETNumberOfDice</span><span class="o">);</span>
+      <span class="n">String</span> <span class="n">input</span> <span class="o">=</span> <span class="n">numberOfDice</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+      <span class="kt">int</span> <span class="n">iNumberOfDice</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+<p> Next we are going to create the sum. We will just be using the basic Math.random function  </p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">diceRoll</span><span class="o">(</span><span class="n">View</span> <span class="n">Button</span><span class="o">)</span>
+    <span class="o">{</span>
+      <span class="o">...</span>
+      <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+      <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">iNumberOfDice</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
+      <span class="o">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">rollDice</span><span class="o">(</span><span class="n">iNumberOfSides</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">rollDice</span><span class="o">(</span><span class="kt">int</span> <span class="n">numSides</span><span class="o">){</span>
+      <span class="k">return</span> <span class="o">(</span><span class="kt">int</span><span class="o">)(</span><span class="n">Math</span><span class="o">.</span><span class="na">random</span><span class="o">()*</span><span class="n">numSides</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+<p> Finally we need to print out this new value to the View UI</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">diceRoll</span><span class="o">(</span><span class="n">View</span> <span class="n">Button</span><span class="o">)</span>
+    <span class="o">{</span>
+      <span class="o">...</span>
+      <span class="n">TextView</span> <span class="n">result</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">Result</span><span class="o">);</span>
+      <span class="n">result</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">sum</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+<h2> Challenges: </h2>
+
+<ul> 
+  <li> Why don't you see if you can't create a way to do different types of dices. For example, roll two 6 sided dice and one 8 sided one. You will liking have to add a new button to handle this queuing of dice rolls</li>
+</ul>
+
+        </section>
+      </div>
+      <footer>
+        <p>Founded by <a href="http://github.com/orderedlist">Maximilian Rogers</a></p>
+        <p>Hosted on GitHub Pages &mdash; Theme influenced by <a href="https://github.com/orderedlist">orderedlist</a></p>
+      </footer>
+    </body>
+</html>

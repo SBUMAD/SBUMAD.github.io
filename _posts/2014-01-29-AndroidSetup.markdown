@@ -2,7 +2,7 @@
 layout: post
 title:  "Android Setup"
 date:   2014-01-29 21:34:10
-categories: jekyll update
+categories: android tutorials
 ---
 
 <h2>Setting Up for Android Development</h2>
@@ -23,8 +23,8 @@ categories: jekyll update
 <div class="tab-content">
   <div class="tab-pane active" id="Mac"><a href="http://developer.android.com/sdk/index.html#mac-bundle">Mac Download Link</a>
   </div>
-  <div class="tab-pane" id="Windows"><a href="http://developer.android.com/sdk/index.html#mac-bundle">Windows Download Link</a></div>
-  <div class="tab-pane" id="Linux"><a href="http://developer.android.com/sdk/index.html#mac-bundle">Linux Download Link</a></div>
+  <div class="tab-pane" id="Windows"><a href="http://developer.android.com/sdk/index.html#windows-bundle">Windows Download Link</a></div>
+  <div class="tab-pane" id="Linux"><a href="http://developer.android.com/sdk/index.html#linux-bundle">Linux Download Link</a></div>
 </div>
 <p><em> Move zip to where you wish to store this application then unzip. I just use the Applications folder on my Mac</em></p>
 <h2>Building the Hello World App</h2>
@@ -70,7 +70,8 @@ categories: jekyll update
 <p>However, if you dont have an android device, then emulation is your best option. When you first boot up your android device it is going to take a long time to boot. However, this is just for configuration purposes. Please let it just run its course. However, if it takes longer than 10 minutes, then something has gone wrong and I recommend terminating the process and adjusting your settings.</p>
 
 otherwise you may experience complications.</p>
-<!-- Nav tabs -->
+
+<h2> Physical / Emulator </h2>
 <ul class="nav nav-tabs">
 <li class="active"><a href="#Physical" data-toggle="tab">Physical</a></li>
 <li><a href="#Emulator" data-toggle="tab">Emulator</a></li>
@@ -118,9 +119,10 @@ For example: <a href="http://blog.immersion.com/2013/05/developer-options-galaxy
 <p> So lets try out print some Logs. Go to Src->com.SBUMAD.helloworld and open up MainActivity.java</p>
 <img src="../../../../../images/Android/SetupLog01.png">
 <p> Now under OnCreate append </p>
-<pre><code>Log.i("MyApp", "Info: Use me to spit out basic infomation like ensuring a function is being called");
-  Log.e("MyApp", "Error: Use me to print out throw errors");
-  Log.d("MyApp", "Debug: Use to spit out debugging info");</code></pre> 
+{% highlight java %}Log.i("MyApp", "Info: Use me to spit out basic infomation like ensuring a function is being called"); 
+Log.e("MyApp", "Error: Use me to print out throw errors"); 
+Log.d("MyApp", "Debug: Use to spit out debugging info");
+  {% endhighlight %}
 <img src="../../../../../images/Android/SetupLog02.png">
 <p> Now click run again. The program should recompile and be installed then ran on your device. then open up the LogCat</p>
 <img src="../../../../../images/Android/SetupLogcat01.png">
