@@ -47,7 +47,400 @@
         <section>
           <h2> Jotto Game </h2>
 
-<p><a href="../../../../../apk/JottoGame2.apk"> Download APK </a></p>
+<p>In this tutorial I will be demostrating how to build an app that plays the game Jotto with the user. I choose to build this app because it always me to cover a lot of useful topics</p>
+
+<ol>
+  <li>Internal Database</li>
+  <li>Relative VS Linear Layouts</li>
+  <li>Dialogs</li>
+  <li>Spannable Strings</li>
+  <li>Among Others</li>
+</ol>
+
+<p>If you would like to working copy here is the <a href="../../../../../apk/JottoGame2.apk"> APK </a> and <a> Source </a></p>
+
+<h3> What is Jotto? </h3>
+
+<p> Jotto is a word game where player A, in this case the computer, selects a random 5 letter word. Then player B, the mobile user, may guess it. After every guess, the computer will tell the user how many letters their guess have in common with the answer. Until they finally get it right.</p>
+
+<pre><code> Step 1: build an android application as usually. Just make sure we have a Minimum SDK of atleast 9 </code> </pre>
+
+<h3> Internal Database</h3>
+
+<p> The first thing we need to recognize is that we will need a Database to store all 5757 valid english 5 letter words. Otherwise that would take up a lot of applications random access memory along with being incrediblely inefficeint search times. So we will be using the built in SQLite databsae. If you are familiar with MySQL or PostGreSQL from web development then querying SQLite won't be too strange. </p>
+
+<p><em> To learn in more detail check out:  </em>
+<p> now add a new class <strong>DatabaseHandler.java</strong></p></p>
+
+<div class="highlight"><pre><code class="java"><span class="kn">import</span> <span class="nn">android.database.sqlite.SQLiteOpenHelper</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DatabaseHandler</span> <span class="kd">extends</span> <span class="n">SQLiteOpenHelper</span><span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">DB_NAME</span> <span class="o">=</span> <span class="s">&quot;jottogame.db&quot;</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">DB_PATH</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">TAG</span> <span class="o">=</span> <span class="s">&quot;DatabaseHandler&quot;</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">Context</span> <span class="n">myContext</span><span class="o">;</span> 
+  <span class="kd">public</span> <span class="nf">DatabaseHandler</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span>  
+  <span class="o">{</span> 
+      <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">DB_NAME</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span><span class="c1">// 1? its Database Version </span>
+      <span class="n">DB_PATH</span> <span class="o">=</span> <span class="s">&quot;/data/data/&quot;</span> <span class="o">+</span> <span class="n">context</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;/databases/&quot;</span><span class="o">;</span> 
+      <span class="k">this</span><span class="o">.</span><span class="na">myContext</span> <span class="o">=</span> <span class="n">context</span><span class="o">;</span> 
+  <span class="o">}</span>
+  <span class="c1">// We will ignore these functions. Since we are importing a preexisting database, we will be building our own custom creation methods</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">SQLiteDatabase</span> <span class="n">arg0</span><span class="o">)</span> <span class="o">{}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpgrade</span><span class="o">(</span><span class="n">SQLiteDatabase</span> <span class="n">arg0</span><span class="o">,</span> <span class="kt">int</span> <span class="n">arg1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">arg2</span><span class="o">)</span> <span class="o">{}</span> 
+<span class="o">}</span>
+</code></pre></div>
+
+<p> Next thing is that we need to import the database I've already precompiled for you <a href="../../../../../apk/jottogame.db"> DatabaseFile.</a> You will then paste that into your assets folder.</p>
+
+<p> Now we need to copy this database into our app. </p>
+
+<div class="highlight"><pre><code class="java"><span class="kn">import</span> <span class="nn">android.database.sqlite.SQLiteOpenHelper</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DatabaseHandler</span> <span class="kd">extends</span> <span class="n">SQLiteOpenHelper</span><span class="o">{</span>
+  <span class="c1">//... </span>
+  <span class="kd">private</span> <span class="n">SQLiteDatabase</span> <span class="n">myDataBase</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">DatabaseHandler</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span>  
+  <span class="o">{</span> 
+      <span class="c1">//...</span>
+  <span class="o">}</span>
+  <span class="c1">//...</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createDataBase</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> 
+  <span class="o">{</span> 
+      <span class="c1">//If database not exists copy it from the assets </span>
+   
+      <span class="kt">boolean</span> <span class="n">myDataBaseExist</span> <span class="o">=</span> <span class="n">checkDataBase</span><span class="o">();</span> 
+      <span class="k">if</span><span class="o">(!</span><span class="n">myDataBaseExist</span><span class="o">)</span> 
+      <span class="o">{</span> 
+          <span class="k">this</span><span class="o">.</span><span class="na">getReadableDatabase</span><span class="o">();</span> 
+          <span class="k">this</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> 
+          <span class="k">try</span>  
+          <span class="o">{</span> 
+              <span class="c1">//Copy the database from assests </span>
+              <span class="n">copyDataBase</span><span class="o">();</span> 
+              <span class="n">Log</span><span class="o">.</span><span class="na">e</span><span class="o">(</span><span class="n">TAG</span><span class="o">,</span> <span class="s">&quot;createDatabase database created&quot;</span><span class="o">);</span> 
+          <span class="o">}</span>  
+          <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">mIOException</span><span class="o">)</span>  
+          <span class="o">{</span> 
+              <span class="k">throw</span> <span class="k">new</span> <span class="nf">Error</span><span class="o">(</span><span class="s">&quot;ErrorCopyingDataBase&quot;</span><span class="o">);</span> 
+          <span class="o">}</span> 
+      <span class="o">}</span> 
+  <span class="o">}</span> 
+  <span class="c1">//Check that the database exists here: /data/data/your package/databases/DB_Name </span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">checkDataBase</span><span class="o">()</span> 
+  <span class="o">{</span> 
+    <span class="n">File</span> <span class="n">dbFile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">DB_PATH</span> <span class="o">+</span> <span class="n">DB_NAME</span><span class="o">);</span> 
+    <span class="c1">//Log.v(&quot;dbFile&quot;, dbFile + &quot;   &quot;+ dbFile.exists()); </span>
+        <span class="k">return</span> <span class="n">dbFile</span><span class="o">.</span><span class="na">exists</span><span class="o">();</span> 
+    <span class="o">}</span> 
+ 
+    <span class="c1">//Copy the database from assets </span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">copyDataBase</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> 
+    <span class="o">{</span> 
+        <span class="n">InputStream</span> <span class="n">mInput</span> <span class="o">=</span> <span class="n">myContext</span><span class="o">.</span><span class="na">getAssets</span><span class="o">().</span><span class="na">open</span><span class="o">(</span><span class="n">DB_NAME</span><span class="o">);</span> 
+        <span class="n">String</span> <span class="n">outFileName</span> <span class="o">=</span> <span class="n">DB_PATH</span> <span class="o">+</span> <span class="n">DB_NAME</span><span class="o">;</span> 
+        <span class="n">OutputStream</span> <span class="n">mOutput</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileOutputStream</span><span class="o">(</span><span class="n">outFileName</span><span class="o">);</span> 
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">mBuffer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span> 
+        <span class="kt">int</span> <span class="n">mLength</span><span class="o">;</span> 
+        <span class="k">while</span> <span class="o">((</span><span class="n">mLength</span> <span class="o">=</span> <span class="n">mInput</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">mBuffer</span><span class="o">))&gt;</span><span class="mi">0</span><span class="o">)</span> 
+        <span class="o">{</span> 
+            <span class="n">mOutput</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">mBuffer</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">mLength</span><span class="o">);</span> 
+        <span class="o">}</span> 
+        <span class="n">mOutput</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span> 
+        <span class="n">mOutput</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> 
+        <span class="n">mInput</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> 
+    <span class="o">}</span> 
+   
+      <span class="c1">//Open the database, so we can query it </span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">openDataBase</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">SQLException</span> 
+  <span class="o">{</span> 
+    <span class="n">String</span> <span class="n">myPath</span> <span class="o">=</span> <span class="n">DB_PATH</span> <span class="o">+</span> <span class="n">DB_NAME</span><span class="o">;</span> 
+    <span class="c1">//Log.v(&quot;mPath&quot;, mPath); </span>
+    <span class="n">myDataBase</span> <span class="o">=</span> <span class="n">SQLiteDatabase</span><span class="o">.</span><span class="na">openDatabase</span><span class="o">(</span><span class="n">myPath</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">SQLiteDatabase</span><span class="o">.</span><span class="na">CREATE_IF_NECESSARY</span><span class="o">);</span> 
+    <span class="c1">//mDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS); </span>
+        <span class="k">return</span> <span class="n">myDataBase</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span> 
+    <span class="o">}</span> 
+ 
+    <span class="nd">@Override</span> 
+    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">()</span>  
+    <span class="o">{</span> 
+        <span class="k">if</span><span class="o">(</span><span class="n">myDataBase</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> 
+            <span class="n">myDataBase</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> 
+        <span class="kd">super</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> 
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p> Now lets add a function so we can access this database. </p>
+
+<div class="highlight"><pre><code class="java"><span class="kn">import</span> <span class="nn">android.database.sqlite.SQLiteOpenHelper</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DatabaseHandler</span> <span class="kd">extends</span> <span class="n">SQLiteOpenHelper</span><span class="o">{</span>
+  <span class="c1">//... </span>
+  <span class="kd">public</span> <span class="nf">DatabaseHandler</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span>  
+  <span class="o">{</span> 
+      <span class="c1">//...</span>
+  <span class="o">}</span>
+  <span class="c1">//...</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getWord</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="s">&quot;Jotto&quot;</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">query</span> <span class="o">=</span> <span class="s">&quot;SELECT * FROM &quot;</span><span class="o">+</span><span class="n">TABLE_WORDS</span><span class="o">+</span><span class="s">&quot; WHERE id =&quot;</span><span class="o">+</span><span class="n">x</span><span class="o">;</span>
+    <span class="n">SQLiteDatabase</span> <span class="n">db</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getReadableDatabase</span><span class="o">();</span>
+    <span class="n">Cursor</span> <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="na">rawQuery</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">cursor</span><span class="o">.</span><span class="na">moveToFirst</span><span class="o">()){</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="n">db</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+  <span class="o">}</span>
+  
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getRandomWord</span><span class="o">(){</span>
+    <span class="kt">int</span> <span class="n">rand</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">random</span><span class="o">()*</span><span class="n">NUM_WORDS</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nf">getWord</span><span class="o">(</span><span class="n">rand</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p> Now to see the fruits of our labors. open your <strong> MainActivity.java</strong></p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">DatabaseHandler</span> <span class="n">db</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">TAG</span> <span class="o">=</span> <span class="s">&quot;MAIN&quot;</span><span class="o">;</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+    <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">);</span>
+    <span class="n">loadData</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">loadData</span><span class="o">(){</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseHandler</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">db</span><span class="o">.</span><span class="na">createDataBase</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// TODO Auto-generated catch block</span>
+      <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">try</span><span class="o">{</span>
+      <span class="n">db</span><span class="o">.</span><span class="na">openDataBase</span><span class="o">();</span>
+    <span class="o">}</span><span class="k">catch</span><span class="o">(</span> <span class="n">SQLException</span> <span class="n">e</span><span class="o">){</span>
+      <span class="n">Log</span><span class="o">.</span><span class="na">e</span><span class="o">(</span><span class="n">TAG</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="n">Log</span><span class="o">.</span><span class="na">i</span><span class="o">(</span><span class="n">TAG</span><span class="o">,</span><span class="n">db</span><span class="o">.</span><span class="na">getRandomWord</span><span class="o">());</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p> Now check the LogCAT for that random word. It will be an INFO message</p>
+
+<h2> Relative Layout </h2>
+
+<p> Now that we have a database setup it time to start taking in user input </p>
+
+<p> Before you used the Linear Layout, today I will demonstrate how to use the Relative Layout. The core difference is that the Linear Layout just appends elements while the Relative Layout allows you to place more complicated rules to widgets. For example you may want a button always at the button of the app or this particular text field should always be above this spinner. Relative Layout makes these kind of arrangements easy  </p>
+
+<p><em> To learn in more detail check out:  </em>
+<p> Open up <strong> activity_main.xml </strong></p></p>
+
+<div class="highlight"><pre><code class="java"><span class="o">&lt;</span><span class="n">RelativeLayout</span> <span class="nl">xmlns:</span><span class="n">android</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="nl">xmlns:</span><span class="n">tools</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/tools&quot;</span>
+    <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+    <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+    <span class="nl">android:</span><span class="n">paddingBottom</span><span class="o">=</span><span class="s">&quot;@dimen/activity_vertical_margin&quot;</span>
+    <span class="nl">android:</span><span class="n">paddingLeft</span><span class="o">=</span><span class="s">&quot;@dimen/activity_horizontal_margin&quot;</span>
+    <span class="nl">android:</span><span class="n">paddingRight</span><span class="o">=</span><span class="s">&quot;@dimen/activity_horizontal_margin&quot;</span>
+    <span class="nl">android:</span><span class="n">paddingTop</span><span class="o">=</span><span class="s">&quot;@dimen/activity_vertical_margin&quot;</span>
+    <span class="nl">tools:</span><span class="n">context</span><span class="o">=</span><span class="s">&quot;.MainActivity&quot;</span> <span class="o">&gt;</span>
+
+    <span class="o">&lt;</span><span class="n">EditText</span>
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+        <span class="nl">android:</span><span class="n">inputType</span><span class="o">=</span><span class="s">&quot;text&quot;</span>
+      <span class="nl">android:</span><span class="n">imeOptions</span><span class="o">=</span><span class="s">&quot;actionDone&quot;</span>
+        <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/EditText01&quot;</span> <span class="o">/&gt;</span> 
+
+    <span class="o">&lt;</span><span class="n">LinearLayout</span> 
+        <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/Guesslayout&quot;</span>
+        <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span> 
+        <span class="nl">android:</span><span class="n">paddingLeft</span><span class="o">=</span><span class="s">&quot;4.0dip&quot;</span> 
+        <span class="nl">android:</span><span class="n">paddingTop</span><span class="o">=</span><span class="s">&quot;5.0dip&quot;</span> 
+        <span class="nl">android:</span><span class="n">paddingRight</span><span class="o">=</span><span class="s">&quot;4.0dip&quot;</span> 
+        <span class="nl">android:</span><span class="n">paddingBottom</span><span class="o">=</span><span class="s">&quot;1.0dip&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@+id/EditText01&quot;</span><span class="o">&gt;</span> 
+
+        <span class="o">&lt;</span><span class="n">Button</span> 
+            <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/Giveup&quot;</span>
+            <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;0.0dip&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> 
+            <span class="nl">android:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;Give Up&quot;</span> 
+            <span class="nl">android:</span><span class="n">layout_weight</span><span class="o">=</span><span class="s">&quot;1.0&quot;</span> <span class="o">/&gt;</span> 
+        <span class="o">&lt;</span><span class="n">Button</span> 
+            <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/Guess&quot;</span> 
+            <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;0.0dip&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> 
+            <span class="nl">android:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;Guess&quot;</span> 
+            <span class="nl">android:</span><span class="n">layout_weight</span><span class="o">=</span><span class="s">&quot;1.0&quot;</span> <span class="o">/&gt;</span> 
+    <span class="o">&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">LinearLayout</span> 
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/AFLayout&quot;</span>
+        <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@+id/Guesslayout&quot;</span><span class="o">&gt;&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">LinearLayout</span> 
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/GLLayout&quot;</span>
+        <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@+id/AFLayout&quot;</span><span class="o">&gt;&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">LinearLayout</span> 
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/MRLayout&quot;</span>
+        <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@+id/GLLayout&quot;</span><span class="o">&gt;&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">LinearLayout</span> 
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/SXLayout&quot;</span>
+        <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@+id/MRLayout&quot;</span><span class="o">&gt;&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">LinearLayout</span> 
+      <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/YZLayout&quot;</span>
+        <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;fill_parent&quot;</span> <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span> 
+        <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@+id/SXLayout&quot;</span><span class="o">&gt;&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">ScrollView</span>
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+        <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+        <span class="nl">android:</span><span class="n">layout_below</span><span class="o">=</span><span class="s">&quot;@+id/YZLayout&quot;</span>
+        <span class="nl">android:</span><span class="n">layout_centerHorizontal</span><span class="o">=</span><span class="s">&quot;true&quot;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">TextView</span>
+        <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/GuessList&quot;</span>
+        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+        <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+        <span class="nl">android:</span><span class="n">ems</span><span class="o">=</span><span class="s">&quot;10&quot;</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;/</span><span class="n">ScrollView</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">RelativeLayout</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p> You will notice some interesting characteristics on these widgets. For example, ScrollView's 'layout_centerHorizontal' and 'layout_below'. These are both unique to Relative Layout. One forces the scrollview to be in the center of the parent layout while the other makes sure the ScrollView is below the indentified LinearLayout</p>
+
+<h3> User input</h3>
+
+<p> Open up <strong> MainActivity.java</strong></p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">DatabaseHandler</span> <span class="n">db</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">TAG</span> <span class="o">=</span> <span class="s">&quot;MAIN&quot;</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">answer</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">guesses</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+    <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">);</span>
+    <span class="n">loadData</span><span class="o">();</span>
+    <span class="n">newGameListener</span><span class="o">();</span>
+    <span class="n">newGame</span><span class="o">();</span>
+    <span class="n">addGuessListener</span><span class="o">();</span>
+  <span class="o">}</span>
+  
+  <span class="c1">//...</span>
+  
+  <span class="kd">private</span> <span class="n">String</span> <span class="nf">inCommon</span><span class="o">(</span><span class="n">String</span> <span class="n">wordA</span><span class="o">,</span> <span class="n">String</span> <span class="n">wordB</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">common</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">wordA</span><span class="o">.</span><span class="na">length</span><span class="o">();</span><span class="n">i</span><span class="o">++){</span>  
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">wordB</span><span class="o">.</span><span class="na">length</span><span class="o">();</span><span class="n">j</span><span class="o">++){</span>  
+            <span class="k">if</span><span class="o">(</span><span class="n">wordA</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)==</span><span class="n">wordB</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">j</span><span class="o">)){</span>  
+                <span class="n">common</span> <span class="o">+=</span> <span class="n">wordA</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>  
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>  
+        <span class="o">}</span>  
+    <span class="o">}</span> 
+    <span class="k">return</span> <span class="n">common</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">makeAGuess</span><span class="o">(){</span>
+    <span class="n">EditText</span> <span class="n">et01</span> <span class="o">=</span> <span class="o">(</span><span class="n">EditText</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">EditText01</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">input</span> <span class="o">=</span> <span class="n">et01</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+    <span class="c1">//make sure it is a meaningful and valid guess</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">input</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">input</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">input</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">==</span> <span class="mi">5</span><span class="o">){</span>
+      <span class="c1">//Log.i(TAG, &quot;Check if valid guess&quot;);</span>
+      <span class="k">if</span><span class="o">(</span><span class="n">db</span><span class="o">.</span><span class="na">isValidGuess</span><span class="o">(</span><span class="n">input</span><span class="o">))</span>
+      <span class="o">{</span>
+        <span class="n">guesses</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+        <span class="c1">//Log.i(TAG, guesses.get(guesses.size()-1));</span>
+        <span class="n">TextView</span> <span class="n">guessList</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">GuessList</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">guessList</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">guessList</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">input</span><span class="o">+</span><span class="s">&quot;: (&quot;</span><span class="o">+</span><span class="n">inCommon</span><span class="o">(</span><span class="n">answer</span><span class="o">,</span> <span class="n">input</span><span class="o">).</span><span class="na">length</span><span class="o">()+</span><span class="s">&quot;) \n&quot;</span><span class="o">+</span><span class="n">temp</span><span class="o">);</span>
+        <span class="n">InputMethodManager</span> <span class="n">imm</span> <span class="o">=</span> <span class="o">(</span><span class="n">InputMethodManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">INPUT_METHOD_SERVICE</span><span class="o">);</span>
+        <span class="n">imm</span><span class="o">.</span><span class="na">hideSoftInputFromWindow</span><span class="o">(</span><span class="n">et01</span><span class="o">.</span><span class="na">getWindowToken</span><span class="o">(),</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">input</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">answer</span><span class="o">))</span>
+        <span class="o">{</span>
+          <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getApplicationContext</span><span class="o">());</span>
+          <span class="n">builder</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="s">&quot;Congrats!\nyou just won with &quot;</span><span class="o">+</span><span class="n">guesses</span><span class="o">.</span><span class="na">size</span><span class="o">()+</span><span class="s">&quot; guesses.\n&quot;</span><span class="o">);</span>
+          <span class="n">builder</span><span class="o">.</span><span class="na">setPositiveButton</span><span class="o">(</span><span class="s">&quot;New Game&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">DialogInterface</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">DialogInterface</span> <span class="n">arg0</span><span class="o">,</span> <span class="kt">int</span> <span class="n">arg1</span><span class="o">)</span> <span class="o">{</span>
+              <span class="n">newGame</span><span class="o">();</span>
+            <span class="o">}</span>
+          <span class="o">});</span>
+          <span class="n">AlertDialog</span> <span class="n">dialog</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+          <span class="n">dialog</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">recolorLetter</span><span class="o">();</span>
+      <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+        <span class="c1">//Log.i(TAG, &quot;NOT a valid guess&quot;);</span>
+        <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">(),</span> <span class="n">input</span><span class="o">+</span><span class="s">&quot; is not a valid guess&quot;</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">addGuessListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Button</span> <span class="n">btnG</span> <span class="o">=</span> <span class="o">(</span><span class="n">Button</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">Guess</span><span class="o">);</span>
+    <span class="n">btnG</span><span class="o">.</span><span class="na">setBackgroundResource</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">btn_default</span><span class="o">);</span>
+    <span class="n">EditText</span> <span class="n">et01</span> <span class="o">=</span> <span class="o">(</span><span class="n">EditText</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">EditText01</span><span class="o">);</span>
+    <span class="n">et01</span><span class="o">.</span><span class="na">setOnEditorActionListener</span><span class="o">(</span><span class="k">new</span> <span class="n">OnEditorActionListener</span><span class="o">()</span> <span class="o">{</span>                     
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onEditorAction</span><span class="o">(</span><span class="n">TextView</span> <span class="n">v</span><span class="o">,</span> <span class="kt">int</span> <span class="n">actionId</span><span class="o">,</span> <span class="n">KeyEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">makeAGuess</span><span class="o">();</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+    <span class="n">btnG</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">OnClickListener</span><span class="o">(){</span>
+      
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">makeAGuess</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">});</span>
+  <span class="o">}</span>
+ 
+  
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">newGameListener</span><span class="o">(){</span>
+    <span class="n">Button</span> <span class="n">btnNG</span> <span class="o">=</span> <span class="o">(</span><span class="n">Button</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">Giveup</span><span class="o">);</span>
+    <span class="n">btnNG</span><span class="o">.</span><span class="na">setBackgroundResource</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">btn_default</span><span class="o">);</span>
+    <span class="n">btnNG</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">OnClickListener</span><span class="o">(){</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">arg0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">arg0</span><span class="o">.</span><span class="na">getContext</span><span class="o">());</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="s">&quot;The answer was &quot;</span><span class="o">+</span><span class="n">answer</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">());</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setPositiveButton</span><span class="o">(</span><span class="s">&quot;Close&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="n">AlertDialog</span> <span class="n">dialog</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+        <span class="n">newGame</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">});</span>
+  <span class="o">}</span>
+  
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">newGame</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="na">getRandomWord</span><span class="o">();</span>
+    <span class="n">guesses</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+    <span class="n">Log</span><span class="o">.</span><span class="na">i</span><span class="o">(</span><span class="n">TAG</span><span class="o">,</span> <span class="n">answer</span><span class="o">);</span>
+    <span class="n">TextView</span> <span class="n">guessList</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">GuessList</span><span class="o">);</span>
+    <span class="n">guessList</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">);</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="o">;</span><span class="n">c</span><span class="o">&lt;=</span><span class="sc">&#39;Z&#39;</span><span class="o">;</span><span class="n">c</span><span class="o">++)</span>
+    <span class="o">{</span>
+      <span class="n">Button</span> <span class="n">btn</span> <span class="o">=</span> <span class="o">(</span><span class="n">Button</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+      <span class="n">btn</span><span class="o">.</span><span class="na">setBackgroundResource</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">btn_default</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div>
 
         </section>
         <hr>
