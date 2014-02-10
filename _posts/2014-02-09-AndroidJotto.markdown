@@ -15,7 +15,7 @@ categories: android tutorials
   <li>Among Others</li>
 </ol>
 
-<p>If you would like to working copy here is the <a href="../../../../../apk/JottoGame2.apk"> APK </a> and <a> Source </a></p>
+<p>If you would like to working copy here is the <a href="../../../../../apk/JottoGame2.apk"> APK </a> and <a href="https://github.com/SBUMAD/JottoGame"> Source </a></p>
 
 <h3> What is Jotto? </h3>
 <p> Jotto is a word game where player A, in this case the computer, selects a random 5 letter word. Then player B, the mobile user, may guess it. After every guess, the computer will tell the user how many letters their guess have in common with the answer. Until they finally get it right.</p>
