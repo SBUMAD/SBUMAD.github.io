@@ -3,10 +3,11 @@ layout: post
 title:  "Android-Jotto-Game"
 date:   2014-02-09 21:34:10
 categories: android tutorials
+github: https://github.com/SBUMAD/JottoGame
 ---
 <h2> Jotto Game </h2>
 
-<p>In this tutorial I will be demostrating how to build an app that plays the game Jotto with the user. I choose to build this app because it always me to cover a lot of useful topics</p>
+<p>In this tutorial I will be demostrating how to build an app that plays the game Jotto with the user. I choose to build this app because it always me to cover a lot of useful topics. At the end of this tutorial I will provide links to additional more indepth tutorials that are more focused a particular concept</p>
 <ol>
   <li>Internal Database</li>
   <li>Relative VS Linear Layouts</li>
@@ -399,3 +400,100 @@ public class MainActivity extends Activity {
 }
 
 {% endhighlight %}
+
+<p> Some interesting things in this additon</p>
+<p> checkout the section</p>
+
+{% highlight java %}
+InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(et01.getWindowToken(), 0);
+{% endhighlight %}
+
+<p> This hides away the keyboard after you make a guess </p>
+
+<p> Here is another interesting section </p>
+
+{% highlight java %}
+ AlertDialog.Builder builder = new AlertDialog.Builder(this.getApplicationContext());
+          builder.setMessage("Congrats!\nyou just won with "+guesses.size()+" guesses.\n");
+          builder.setPositiveButton("New Game", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+              newGame();
+            }
+          });
+          AlertDialog dialog = builder.create();
+          dialog.show();
+{% endhighlight %}
+
+<p> This here is an Alert Dialog, they are those black boxes that pop up in the middle of the screen and take center focus. Usually they have a button or two. Its the function '.setPositionButton' that adds the button AND its functionality. </p>
+
+<p> In addition to Dialogs, Android has another quick alert system called Toasts. You have built them before with this </p>
+
+{% highlight java %}
+Toast.makeText(getApplicationContext(), input+" is not a valid guess", Toast.LENGTH_SHORT).show();
+{% endhighlight %}
+
+<p> They are much simpler than dialogs but aren't as noticable. In addition, they lack any button functionality. </p>
+
+<p> So use Toasts for quick alerts, like an invalid input. Dialogs are better for serious alerts, like a connection timed out and you need the user to do something to fix it e.g. Renable his Wifi</p>
+
+<h2> Next we need to add the color syntaxing</h2>
+
+{% highlight java %}
+public class MainActivity extends Activity {
+//....
+private void recolorLetter() {
+    TextView guessList = (TextView) findViewById(R.id.GuessList);
+    String temp = guessList.getText().toString();
+    
+    SpannableStringBuilder str = new SpannableStringBuilder(temp);
+    for(int j=0;j<abc.length;j++)
+    {
+      int fcs;
+      char c = (char)((int)('a') + j);
+      if(abc[j] > 1){
+        fcs = Color.rgb(0, 0, 0);
+      }else if(abc[j] < 1){
+        fcs = Color.rgb(0, 255, 0);
+      }else{
+        fcs = Color.rgb(255, 0, 0);
+      }
+      for(int i=0;i<temp.length();i++)
+      {
+        if(temp.charAt(i) == c){
+          str.setSpan(new ForegroundColorSpan(fcs), i, i+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+      }
+    }
+    guessList.setText(str);
+  }
+}
+{% endhighlight %}
+
+<p> Finally we add a little message to inform the user of how to play </p>
+
+{% highlight java %}
+public class MainActivity extends Activity {
+//...
+protected void onCreate(Bundle savedInstanceState) {
+    //...
+    help();
+  }
+//...
+private void help(){
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage("Rules to the Game \n Jotto is a word guessing game where a five letter word is selected at random. After each guess, a number will display how many letters it has in common with the answer. To help you out I have added a series of buttons to color code letters to help keep track. Press a Letter Button one for Green, press it again for a Red Button and press it a third time to reset it.");
+    builder.setPositiveButton("Close", null);
+    AlertDialog alert = builder.create();
+    alert.show();
+  }
+  }
+{% endhighlight %}
+
+<strong> If after followin this tutorial, your copy  doesn't working/compiling, consider comparing it to the <a href="{{page.github}}">github version</a> </strong>
+
+<h2> Other Tutorials </h2>
+<ul>
+<li><a href=""> Android's Internal Database</a></li>
+</ul>

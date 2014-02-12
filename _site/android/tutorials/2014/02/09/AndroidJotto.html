@@ -37,17 +37,17 @@
         <header> 
           <h1><a href="../../../../../index.html">SBUMAD</a></h1>
           <p>Stony Brook University Mobile App Developers</p>
-          <p class="view"><a href="http://github.com/orderedlist/modernist">View the Project on GitHub <small>orderedlist/modernist</small></a></p>
+          <p class="view"><a href="https://github.com/SBUMAD/JottoGame">View the Project on GitHub <small>SBUMAD.github.io</small></a></p>
           <ul>
             <li><a href="https://www.facebook.com/groups/SBUMAD/">Join Us On<strong>Facebook</strong></a></li>
             <li><a href="../../../../../pages.html">Our <strong>Tutorials</strong></a></li>
-            <li><a href="https://github.com/SBUMAD/Android-Jotto-Game" style="color:#FFF;">View Us On <strong>GitHub</strong></a></li>
+            <li><a href="https://github.com/SBUMAD/Android-Jotto-Game" style="color:#FFF;">View It On <strong>GitHub</strong></a></li>
         </ul>
         </header>
         <section>
           <h2> Jotto Game </h2>
 
-<p>In this tutorial I will be demostrating how to build an app that plays the game Jotto with the user. I choose to build this app because it always me to cover a lot of useful topics</p>
+<p>In this tutorial I will be demostrating how to build an app that plays the game Jotto with the user. I choose to build this app because it always me to cover a lot of useful topics. At the end of this tutorial I will provide links to additional more indepth tutorials that are more focused a particular concept</p>
 
 <ol>
   <li>Internal Database</li>
@@ -57,7 +57,7 @@
   <li>Among Others</li>
 </ol>
 
-<p>If you would like to working copy here is the <a href="../../../../../apk/JottoGame2.apk"> APK </a> and <a> Source </a></p>
+<p>If you would like to working copy here is the <a href="../../../../../apk/JottoGame2.apk"> APK </a> and <a href="https://github.com/SBUMAD/JottoGame"> Source </a></p>
 
 <h3> What is Jotto? </h3>
 
@@ -442,6 +442,100 @@
 <span class="o">}</span>
 </code></pre></div>
 
+<p> Some interesting things in this additon</p>
+
+<p> checkout the section</p>
+
+<div class="highlight"><pre><code class="java"><span class="n">InputMethodManager</span> <span class="n">imm</span> <span class="o">=</span> <span class="o">(</span><span class="n">InputMethodManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">INPUT_METHOD_SERVICE</span><span class="o">);</span>
+        <span class="n">imm</span><span class="o">.</span><span class="na">hideSoftInputFromWindow</span><span class="o">(</span><span class="n">et01</span><span class="o">.</span><span class="na">getWindowToken</span><span class="o">(),</span> <span class="mi">0</span><span class="o">);</span>
+</code></pre></div>
+
+<p> This hides away the keyboard after you make a guess </p>
+
+<p> Here is another interesting section </p>
+
+<div class="highlight"><pre><code class="java"> <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getApplicationContext</span><span class="o">());</span>
+          <span class="n">builder</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="s">&quot;Congrats!\nyou just won with &quot;</span><span class="o">+</span><span class="n">guesses</span><span class="o">.</span><span class="na">size</span><span class="o">()+</span><span class="s">&quot; guesses.\n&quot;</span><span class="o">);</span>
+          <span class="n">builder</span><span class="o">.</span><span class="na">setPositiveButton</span><span class="o">(</span><span class="s">&quot;New Game&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">DialogInterface</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">DialogInterface</span> <span class="n">arg0</span><span class="o">,</span> <span class="kt">int</span> <span class="n">arg1</span><span class="o">)</span> <span class="o">{</span>
+              <span class="n">newGame</span><span class="o">();</span>
+            <span class="o">}</span>
+          <span class="o">});</span>
+          <span class="n">AlertDialog</span> <span class="n">dialog</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+          <span class="n">dialog</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+</code></pre></div>
+
+<p> This here is an Alert Dialog, they are those black boxes that pop up in the middle of the screen and take center focus. Usually they have a button or two. Its the function '.setPositionButton' that adds the button AND its functionality. </p>
+
+<p> In addition to Dialogs, Android has another quick alert system called Toasts. You have built them before with this </p>
+
+<div class="highlight"><pre><code class="java"><span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">(),</span> <span class="n">input</span><span class="o">+</span><span class="s">&quot; is not a valid guess&quot;</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+</code></pre></div>
+
+<p> They are much simpler than dialogs but aren't as noticable. In addition, they lack any button functionality. </p>
+
+<p> So use Toasts for quick alerts, like an invalid input. Dialogs are better for serious alerts, like a connection timed out and you need the user to do something to fix it e.g. Renable his Wifi</p>
+
+<h2> Next we need to add the color syntaxing</h2>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+<span class="c1">//....</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">recolorLetter</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">TextView</span> <span class="n">guessList</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">GuessList</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">guessList</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+    
+    <span class="n">SpannableStringBuilder</span> <span class="n">str</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SpannableStringBuilder</span><span class="o">(</span><span class="n">temp</span><span class="o">);</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">abc</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">j</span><span class="o">++)</span>
+    <span class="o">{</span>
+      <span class="kt">int</span> <span class="n">fcs</span><span class="o">;</span>
+      <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="o">(</span><span class="kt">char</span><span class="o">)((</span><span class="kt">int</span><span class="o">)(</span><span class="sc">&#39;a&#39;</span><span class="o">)</span> <span class="o">+</span> <span class="n">j</span><span class="o">);</span>
+      <span class="k">if</span><span class="o">(</span><span class="n">abc</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="o">){</span>
+        <span class="n">fcs</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="na">rgb</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+      <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">abc</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">){</span>
+        <span class="n">fcs</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="na">rgb</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">255</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+      <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+        <span class="n">fcs</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="na">rgb</span><span class="o">(</span><span class="mi">255</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">temp</span><span class="o">.</span><span class="na">length</span><span class="o">();</span><span class="n">i</span><span class="o">++)</span>
+      <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">==</span> <span class="n">c</span><span class="o">){</span>
+          <span class="n">str</span><span class="o">.</span><span class="na">setSpan</span><span class="o">(</span><span class="k">new</span> <span class="n">ForegroundColorSpan</span><span class="o">(</span><span class="n">fcs</span><span class="o">),</span> <span class="n">i</span><span class="o">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="n">Spannable</span><span class="o">.</span><span class="na">SPAN_INCLUSIVE_INCLUSIVE</span><span class="o">);</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">guessList</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p> Finally we add a little message to inform the user of how to play </p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+<span class="c1">//...</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//...</span>
+    <span class="n">help</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="c1">//...</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">help</span><span class="o">(){</span>
+    <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AlertDialog</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="n">builder</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="s">&quot;Rules to the Game \n Jotto is a word guessing game where a five letter word is selected at random. After each guess, a number will display how many letters it has in common with the answer. To help you out I have added a series of buttons to color code letters to help keep track. Press a Letter Button one for Green, press it again for a Red Button and press it a third time to reset it.&quot;</span><span class="o">);</span>
+    <span class="n">builder</span><span class="o">.</span><span class="na">setPositiveButton</span><span class="o">(</span><span class="s">&quot;Close&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">AlertDialog</span> <span class="n">alert</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+    <span class="n">alert</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+  <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>
+
+<p><strong> If after followin this tutorial, your copy  doesn&#39;t working/compiling, consider comparing it to the <a href="https://github.com/SBUMAD/JottoGame">github version</a> </strong></p>
+
+<h2> Other Tutorials </h2>
+
+<ul>
+<li><a href=""> Android's Internal Database</a></li>
+</ul>
+
         </section>
         <hr>
         <h2>Comments</h2>
@@ -449,7 +543,7 @@
 
       </div>
       <footer>
-        <p>Founded by <a href="http://github.com/orderedlist">Maximilian Rogers</a></p>
+        <p>Founded by <a href="http://github.com/honeycodedbear">Maximilian Rogers</a></p>
         <p>Hosted on GitHub Pages &mdash; Theme influenced by <a href="https://github.com/orderedlist">orderedlist</a></p>
       </footer>
     </body>

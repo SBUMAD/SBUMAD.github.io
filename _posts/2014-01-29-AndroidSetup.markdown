@@ -3,6 +3,7 @@ layout: post
 title:  "Android-Setup"
 date:   2014-01-29 21:34:10
 categories: android tutorials
+github: https://github.com/SBUMAD/Android-Setup
 ---
 
 <h2>Setting Up for Android Development</h2>
