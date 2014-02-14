@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Java To Objective C</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/styles.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/javascripts/script.js"></script>
+        <script type="text/javascript" src="/javascripts/scale.fix.js"></script>
+
+
+    </head>
+    <body>
+      <div id="fb-root"></div>
+      <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=1463569603854504";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, "script", "facebook-jssdk"));</script>
+
+
+      <div class="wrapper">
+        <header> 
+          <h1><a href="../../../../../index.html">SBUMAD</a></h1>
+          <p>Stony Brook University Mobile App Developers</p>
+          <p class="view"><a href="https://github.com/SBUMAD/JottoGame">View the Project on GitHub <small>SBUMAD.github.io</small></a></p>
+          <ul>
+            <li><a href="https://www.facebook.com/groups/SBUMAD/">Join Us On<strong>Facebook</strong></a></li>
+            <li><a href="../../../../../pages.html">Our <strong>Tutorials</strong></a></li>
+            <li><a href="https://github.com/SBUMAD/Java To Objective C" style="color:#FFF;">View It On <strong>GitHub</strong></a></li>
+        </ul>
+        </header>
+        <section>
+          <h2> Java To ObjC </h2>
+
+<p> In iOS development, Objective-C is only supported native languge. However, for those familiar with C/C++, Objective C won't be too alien. ObjC shouldn't be through of as an new language but rather an expansion on top of C to include Object-Orienated functionality; hence the name Objective-C.  </p>
+
+<p> However, unless you have been programming for Mac Os X for year, you have probably never written a ObjC program. So I thought I'd build a tutorial to explain the basic concepts of Obj-C coming from a Java prespective. </p>
+
+<p> If you have little C++ experience, then you may find practice of builidng a header and a main file tedious. However, that is the convention of C/C++/ObjC and they have their own advantages when you get to high proficiency. So trying to bare with it at first.</p>
+
+<p> Here are some Java to ObjC translations </p>
+
+<h3> Strings => NSString </h3>
+
+<div class="highlight"><pre><code class="java"><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&quot;String&quot;</span><span class="o">;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="n">NSString</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="s">@&quot;String&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+<p> The '@' means this String is a literal string not a NSString or a C/C++ String. The NS prefix is a bit of heritage; NS stands for NextStar which is the compnay Steve Jobbs started after temporarly leaving Apple. </p>
+
+<h3> ArrayLists => NSMutableArray </h3>
+
+<div class="highlight"><pre><code class="java"><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">strs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="n">NSMutableArray</span> <span class="n">strs</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+</code></pre></div>
+
+<p> The NSMutable Array fulfills the same functionality as the Java Arraylist except it doesn't support Generics. It will add in any Objects </p>
+
+<h3> Main Function</h3>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+  
+<span class="o">}</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="p">@</span><span class="n">autoreleasepool</span> <span class="p">{</span>
+        
+        <span class="c1">// insert code here...</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p> Classes </p>
+
+<p> Now lets build a class object in Java </p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">class</span> <span class="nc">FooBar</span><span class="o">{</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">x</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">y</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">FooBar</span><span class="o">(){</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">y</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getX</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setX</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">){</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">foo</span><span class="o">(</span><span class="kt">int</span> <span class="n">z</span><span class="o">){</span>
+    <span class="k">return</span> <span class="nf">bar</span><span class="o">()</span> <span class="o">+</span> <span class="n">z</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">bar</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="c1">//.h file</span>
+<span class="k">@interface</span> <span class="nc">FooBar</span> :<span class="o">:</span> <span class="n">NSObject</span>
+<span class="k">@property</span> <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setX:</span> <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="nf">foo:</span> <span class="kt">int</span> <span class="n">z</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="nf">bar</span><span class="p">;</span>
+<span class="k">@end</span>
+<span class="c1">//.m file</span>
+<span class="k">@implementation</span> <span class="nc">FooBar</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">init:</span>
+<span class="p">{</span>
+<span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setX:</span><span class="kt">int</span> <span class="n">x</span><span class="p">{</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">foo</span><span class="o">:</span> <span class="kt">int</span> <span class="n">z</span><span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="n">bar</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">-</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">bar</span><span class="p">{</span>
+  <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+</code></pre></div>
+
+<h2> JavaToObjC </h2>
+
+<p> I have written a Java program that displays some basic fundamentals [Objects, Inhertiance, Polymorphism, Generics, Interfaces].</p>
+
+<p> You can download the Java code here: <a href="JavaFundamentals"> LINK </a> </p> <p>and you can download the ObjC code here <a href="JavaToObjc"> LINK </a></p>
+
+<p>To open a basic console commandline ObjC project in Xcode. You start new project, OS X -&gt; CommandLine tool and make sure TYPE is Foundation. <em> This is how you would build a basic C/C++ program with XCode. Just change the Type to C/C++</em></p>
+
+<h3> Person </h3>
+
+<div class="highlight"><pre><code class="java">
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="c1">//..Person.h</span>
+<span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &quot;Gender.h&quot;</span>
+<span class="k">@interface</span> <span class="nc">Person</span> : <span class="nc">NSObject</span><span class="o">&lt;</span><span class="n">Gender</span><span class="o">&gt;</span>
+<span class="k">@property</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+<span class="k">@property</span> <span class="n">NSDateComponents</span> <span class="o">*</span><span class="n">birthday</span><span class="p">;</span>
+<span class="k">@property</span> <span class="n">Person</span> <span class="o">*</span><span class="n">father</span><span class="p">;</span>
+<span class="k">@property</span> <span class="n">Person</span> <span class="o">*</span><span class="n">mother</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">Person</span> <span class="o">*</span><span class="n">spouse</span><span class="p">;</span>
+<span class="k">@property</span> <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">children</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="nf">calculateAge</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">init:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">name</span> <span class="o">:</span><span class="p">(</span><span class="n">NSDateComponents</span> <span class="o">*</span><span class="p">)</span> <span class="n">bday</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">toString</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">alreadyClaimedChild:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">addParents:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span> <span class="n">dad</span> <span class="o">:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span> <span class="n">mom</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">addChild:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setSpouse:</span> <span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;</span>
+<span class="k">+</span><span class="p">(</span><span class="n">NSDateComponents</span> <span class="o">*</span><span class="p">)</span> <span class="nf">makeBday:</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">month</span> <span class="o">:</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">date</span> <span class="o">:</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">year</span><span class="p">;</span>
+<span class="k">@end</span>
+<span class="c1">//..Person.m</span>
+<span class="cp">#import &quot;Person.h&quot;</span>
+<span class="k">@implementation</span> <span class="nc">Person</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">init:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">name</span> <span class="o">:</span><span class="p">(</span><span class="n">NSDateComponents</span> <span class="o">*</span><span class="p">)</span><span class="n">bday</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">){</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">birthday</span> <span class="o">=</span> <span class="n">bday</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="n">isMale</span><span class="p">{</span><span class="k">return</span> <span class="nb">false</span><span class="p">;}</span>
+<span class="o">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="n">isFemale</span><span class="p">{</span><span class="k">return</span> <span class="nb">false</span><span class="p">;}</span>
+<span class="o">-</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="n">gender</span><span class="p">{</span><span class="k">return</span> <span class="s">@&quot;NONE&quot;</span><span class="p">;}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">calculateAge</span><span class="p">{</span>
+    <span class="n">NSDateComponents</span> <span class="o">*</span><span class="n">components</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSCalendar</span> <span class="n">currentCalendar</span><span class="p">]</span> <span class="n">components</span><span class="o">:</span><span class="n">NSDayCalendarUnit</span> <span class="o">|</span> <span class="n">NSMonthCalendarUnit</span> <span class="o">|</span> <span class="n">NSYearCalendarUnit</span> <span class="n">fromDate</span><span class="o">:</span><span class="p">[</span><span class="n">NSDate</span> <span class="n">date</span><span class="p">]];</span>
+    <span class="n">NSInteger</span> <span class="n">year</span> <span class="o">=</span> <span class="p">[</span><span class="n">components</span> <span class="n">year</span><span class="p">];</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="n">year</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">birthday</span><span class="p">.</span><span class="n">year</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="n">toString</span><span class="p">{</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;</span><span class="se">\n</span><span class="s">%@:</span><span class="se">\t</span><span class="s">{Age:</span><span class="se">\t</span><span class="s">%d&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">self</span> <span class="n">calculateAge</span><span class="p">]</span> <span class="p">];</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@</span><span class="se">\n\t\t\t</span><span class="s">BDay:</span><span class="se">\t</span><span class="s">%ld/%ld/%ld&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">birthday</span><span class="p">.</span><span class="n">month</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">birthday</span><span class="p">.</span><span class="n">day</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">self</span><span class="p">.</span><span class="n">birthday</span><span class="p">.</span><span class="n">year</span> <span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">spouse</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">){</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@</span><span class="se">\n\t\t\t</span><span class="s">Spouse:</span><span class="se">\t</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">spouse</span><span class="p">.</span><span class="n">name</span> <span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">father</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@</span><span class="se">\n\t\t\t</span><span class="s">Father:</span><span class="se">\t</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">father</span><span class="p">.</span><span class="n">name</span> <span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">mother</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@</span><span class="se">\n\t\t\t</span><span class="s">Mother:</span><span class="se">\t</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">mother</span><span class="p">.</span><span class="n">name</span> <span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">children</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@</span><span class="se">\n\t\t\t</span><span class="s">Children:</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">];</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="n">p</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">children</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@</span><span class="se">\n\t\t\t\t</span><span class="s">%@&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">name</span> <span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@}&quot;</span><span class="p">,</span> <span class="n">result</span> <span class="p">];</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="n">alreadyClaimedChild</span><span class="o">:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="n">c</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">([</span><span class="n">p</span><span class="p">.</span><span class="n">name</span> <span class="n">isEqualTo</span><span class="o">:</span><span class="n">c</span><span class="p">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">addParents</span><span class="o">:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">dad</span> <span class="o">:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">mom</span><span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">father</span> <span class="o">=</span> <span class="n">dad</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">mother</span> <span class="o">=</span> <span class="n">mom</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">addChild</span><span class="o">:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">children</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">children</span> <span class="n">addObject</span><span class="o">:</span><span class="n">p</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isMale</span><span class="p">){</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">father</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">mother</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">spouse</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">spouse</span> <span class="n">alreadyClaimedChild</span><span class="o">:</span><span class="n">p</span><span class="p">]){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isMale</span><span class="p">){</span>
+            <span class="n">p</span><span class="p">.</span><span class="n">mother</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">spouse</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="n">p</span><span class="p">.</span><span class="n">father</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">spouse</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">spouse</span> <span class="n">addChild</span><span class="o">:</span><span class="n">p</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="o">+</span><span class="p">(</span><span class="n">NSDateComponents</span> <span class="o">*</span><span class="p">)</span> <span class="n">makeBday</span><span class="o">:</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">month</span> <span class="o">:</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">day</span> <span class="o">:</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">year</span><span class="p">{</span>
+    <span class="n">NSDateComponents</span> <span class="o">*</span><span class="n">bday</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSDateComponents</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">bday</span> <span class="n">setYear</span><span class="o">:</span><span class="n">year</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">bday</span> <span class="n">setMonth</span><span class="o">:</span><span class="n">month</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">bday</span> <span class="n">setDay</span><span class="o">:</span><span class="n">day</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">bday</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">setSpouse</span><span class="o">:</span><span class="p">(</span><span class="n">Person</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">{</span>
+    <span class="n">_spouse</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">spouse</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">){</span>
+        <span class="p">[</span><span class="n">p</span> <span class="n">setSpouse</span><span class="o">:</span><span class="n">self</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+</code></pre></div>
+
+<p> Gender </p>
+
+<div class="highlight"><pre><code class="java">
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="k">@protocol</span> <span class="nc">Gender</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span>
+<span class="o">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="n">isMale</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">isFemale</span><span class="p">;</span>
+<span class="k">-</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">gender</span><span class="p">;</span>
+<span class="k">@end</span>
+</code></pre></div>
+
+<p> Male/Female</p>
+
+<div class="highlight"><pre><code class="java">
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="c1">// female.h</span>
+<span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &quot;Person.h&quot;</span>
+<span class="k">@interface</span> <span class="nc">Female</span> : <span class="nc">Person</span>
+<span class="k">@property</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">maiden</span><span class="p">;</span>
+<span class="k">@end</span>
+<span class="c1">// female.m</span>
+<span class="cp">#import &quot;Female.h&quot;</span>
+<span class="k">@implementation</span> <span class="nc">Female</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">isFemale</span><span class="p">{</span><span class="k">return</span> <span class="nb">true</span><span class="p">;}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">isMale</span><span class="p">{</span><span class="k">return</span> <span class="nb">false</span><span class="p">;}</span>
+<span class="k">-</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">gender</span><span class="p">{</span><span class="k">return</span> <span class="s">@&quot;Female&quot;</span><span class="p">;}</span>
+<span class="k">@end</span>
+<span class="c1">// male.h</span>
+<span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &quot;Person.h&quot;</span>
+<span class="k">@interface</span> <span class="nc">Male</span> : <span class="nc">Person</span>
+<span class="k">@end</span>
+<span class="c1">// male.m</span>
+<span class="cp">#import &quot;Male.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">Male</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">isFemale</span><span class="p">{</span><span class="k">return</span> <span class="nb">false</span><span class="p">;}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">isMale</span><span class="p">{</span><span class="k">return</span> <span class="nb">true</span><span class="p">;}</span>
+<span class="k">-</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">gender</span><span class="p">{</span><span class="k">return</span> <span class="s">@&quot;Male&quot;</span><span class="p">;}</span>
+<span class="k">@end</span>
+</code></pre></div>
+
+<h2> Now for the main functions </h2>
+
+<div class="highlight"><pre><code class="java">
+</code></pre></div>
+
+<div class="highlight"><pre><code class="objective-c"><span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &quot;Person.h&quot;</span>
+<span class="cp">#import &quot;Male.h&quot;</span>
+<span class="cp">#import &quot;Female.h&quot;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+
+    <span class="p">@</span><span class="n">autoreleasepool</span> <span class="p">{</span>
+        
+        <span class="c1">// insert code here...</span>
+        <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;Barack Obama&quot;</span><span class="p">;</span>
+        <span class="n">NSDateComponents</span> <span class="o">*</span><span class="n">bday</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSDateComponents</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">bday</span> <span class="n">setYear</span><span class="o">:</span><span class="mi">1961</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">bday</span> <span class="n">setMonth</span><span class="o">:</span><span class="mi">8</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">bday</span> <span class="n">setDay</span><span class="o">:</span><span class="mi">4</span><span class="p">];</span>
+        <span class="n">Male</span> <span class="o">*</span><span class="n">obama</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Male</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="o">:</span><span class="n">name</span> <span class="o">:</span><span class="n">bday</span><span class="p">];</span>
+        <span class="n">Female</span> <span class="o">*</span><span class="n">michelle</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Female</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="o">:</span><span class="s">@&quot;Michelle Obama&quot;</span> <span class="o">:</span><span class="p">[</span><span class="n">Person</span> <span class="n">makeBday</span><span class="o">:</span><span class="mo">01</span> <span class="o">:</span> <span class="mi">17</span> <span class="o">:</span> <span class="mi">1964</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">michelle</span> <span class="n">setSpouse</span><span class="o">:</span><span class="n">obama</span><span class="p">];</span>
+        <span class="n">Female</span> <span class="o">*</span><span class="n">malia</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Female</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="o">:</span><span class="s">@&quot;Malie Obama&quot;</span> <span class="o">:</span><span class="p">[</span><span class="n">Person</span> <span class="n">makeBday</span><span class="o">:</span><span class="mo">07</span> <span class="o">:</span><span class="mo">04</span> <span class="o">:</span><span class="mi">1998</span><span class="p">]];</span>
+        <span class="n">Female</span> <span class="o">*</span><span class="n">natasha</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Female</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="o">:</span><span class="s">@&quot;Natasha Obama&quot;</span> <span class="o">:</span><span class="p">[</span><span class="n">Person</span> <span class="n">makeBday</span><span class="o">:</span><span class="mo">06</span> <span class="o">:</span><span class="mo">01</span> <span class="o">:</span><span class="mi">2001</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">obama</span> <span class="n">addChild</span><span class="o">:</span><span class="n">malia</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">obama</span> <span class="n">addChild</span><span class="o">:</span><span class="n">natasha</span><span class="p">];</span>
+        <span class="n">NSLog</span><span class="p">([</span><span class="n">NSString</span> <span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;%@%@%@%@&quot;</span> <span class="p">,[</span><span class="n">obama</span> <span class="n">toString</span><span class="p">],</span> <span class="p">[</span><span class="n">michelle</span> <span class="n">toString</span><span class="p">],</span> <span class="p">[</span><span class="n">malia</span> <span class="n">toString</span><span class="p">]</span> <span class="p">,[</span><span class="n">natasha</span> <span class="n">toString</span><span class="p">]]);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2> Recommended iOS Tutorials </h2>
+
+<ul>
+<li><a href="http://www.appcoda.com/ios-programming-course/"> App Coda iO6 tutorials </a></li>
+</ul>
+
+        </section>
+        <hr>
+        <h2>Comments</h2>
+        <div class="fb-comments" data-href="http://sbumad.github.io//android/tutorials/2014/02/10/JavaToObjc.html" data-numposts="5" data-colorscheme="light"></div>
+
+      </div>
+      <footer>
+        <p>Founded by <a href="http://github.com/honeycodedbear">Maximilian Rogers</a></p>
+        <p>Hosted on GitHub Pages &mdash; Theme influenced by <a href="https://github.com/orderedlist">orderedlist</a></p>
+      </footer>
+    </body>
+</html>

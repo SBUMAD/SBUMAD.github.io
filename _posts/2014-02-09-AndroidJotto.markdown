@@ -495,5 +495,7 @@ private void help(){
 
 <h2> Other Tutorials </h2>
 <ul>
-<li><a href=""> Android's Internal Database</a></li>
+<li><a href="http://developer.android.com/guide/topics/data/data-storage.html"> Android's Storage Options </a></li>
+<li><a href="http://www.vogella.com/tutorials/AndroidSQLite/article.html"> Android SQLite Database </a></li>
+<li><a href="http://www.vogella.com/tutorials/AndroidSQLite/article.html"> Android SQLite Database </a></li>
 </ul>
