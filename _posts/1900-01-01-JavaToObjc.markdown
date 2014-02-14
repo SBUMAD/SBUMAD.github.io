@@ -118,7 +118,7 @@ self.y = 1;
 
 <p> I have written a Java program that displays some basic fundamentals [Objects, Inhertiance, Polymorphism, Generics, Interfaces].</p>
 
-<p> You can download the Java code here: <a href="JavaFundamentals"> LINK </a> </p> <p>and you can download the ObjC code here <a href="JavaToObjc"> LINK </a></p>
+<p> You can download the Java && ObjC code here: <a href="https://github.com/honeycodedbear/JavaToObjc"> LINK </a> </p> 
 
 To open a basic console commandline ObjC project in Xcode. You start new project, OS X -> CommandLine tool and make sure TYPE is Foundation. <em> This is how you would build a basic C/C++ program with XCode. Just change the Type to C/C++</em>
 
