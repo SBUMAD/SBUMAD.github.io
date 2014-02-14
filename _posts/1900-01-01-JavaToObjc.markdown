@@ -109,7 +109,7 @@ self.y = 1;
   return [self bar] + x;
 }
 -(int) bar{
-  return self.x = self.y;
+  return self.x + self.y;
 }
 @end
 {% endhighlight %}
